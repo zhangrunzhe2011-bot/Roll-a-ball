@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class CollectibleController : MonoBehaviour
 {
+    private GameManager gameManager;
     [SerializeField] private AudioClip collectSound;
     [SerializeField] private GameObject collectParticlePrefab;
     
@@ -11,6 +12,7 @@ public class CollectibleController : MonoBehaviour
         // Only executes if the collision was with the Player
         if (other.CompareTag("Player"))
         {
+            gameManager.UpdateRemaining();
             // Spawn audio at the collectible's position (auto-destroys)
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
 
@@ -25,7 +27,9 @@ public class CollectibleController : MonoBehaviour
     
     void Start()
     {
-        
+        // Finds the Game Manager in the Scene
+gameManager = FindAnyObjectByType<GameManager>();
+
     }
 
     void Update()
