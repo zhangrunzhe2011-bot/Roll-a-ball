@@ -1,5 +1,9 @@
 using UnityEngine;
-using TMPro;  // Brings in the Text Mesh script package into this script
+using TMPro; 
+using System.Collections;
+using UnityEngine.SceneManagement;
+
+ // Brings in the Text Mesh script package into this script
 /************************************************************
 * COMPONENT OF: Game Manager
 * REQUIRED DEPENDENCIES: TextMeshProUGUI
@@ -47,12 +51,25 @@ public class GameManager : MonoBehaviour
         {
             RemainingTextUI.text = "Collectibles Remaining: " + numberOfCollectibles;
         }
-        else
+
+        else 
         {
-            RemainingTextUI.text = "You Win";
-		    audioSource.clip = winClip;
-            audioSource.Play();
+            StartCoroutine("EndGame");
         }
 
     }
+    IEnumerator EndGame()
+    {
+        RemainingTextUI.text = "You Win";
+	    audioSource.clip = winClip;
+        audioSource.Play();
+
+     
+        yield return new WaitForSeconds(audioSource.clip.length);
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+
+    }
+
 }
