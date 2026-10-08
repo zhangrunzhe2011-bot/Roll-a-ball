@@ -1,3 +1,12 @@
+/****************************************************************************
+* COMPONENT OF: Collectible Prefabs
+* REQUIRED DEPENDENCIES: Game manager, collider Trigger and particle system components
+* DESCRIPTION: THis script calls update reamaining of game manager is triggered by the player
+* AUTHOR: Sky Zhang
+* VERSION 1.0
+* RELEASE NOTES VERSION 1.1: Add a behavior so that the Collectible rotates slowly about the y-axis.
+****************************************************************************/
+
 using UnityEngine;
 
 public class CollectibleController : MonoBehaviour
