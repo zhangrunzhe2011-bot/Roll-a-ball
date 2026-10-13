@@ -14,7 +14,8 @@ public class CollectibleController : MonoBehaviour
     private GameManager gameManager;
     [SerializeField] private AudioClip collectSound;
     [SerializeField] private GameObject collectParticlePrefab;
-    
+    [SerializeField] private float rotationSpeed = 50f;
+
     // Call with this object collides with a trigger
     private void OnTriggerEnter(Collider other)
     {
@@ -43,6 +44,11 @@ gameManager = FindAnyObjectByType<GameManager>();
 
     void Update()
     {
-        
+     RotateCollectible();   
+    }
+
+    private void RotateCollectible()
+    {
+     transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
     }
 }
