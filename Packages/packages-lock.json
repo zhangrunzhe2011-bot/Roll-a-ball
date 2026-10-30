@@ -136,6 +136,15 @@
         "com.unity.searcher": "4.9.3"
       }
     },
+    "com.unity.terrain-tools": {
+      "version": "file:com.unity.terrain-tools",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.modules.terrain": "1.0.0",
+        "com.unity.modules.terrainphysics": "1.0.0"
+      }
+    },
     "com.unity.test-framework": {
       "version": "1.7.0",
       "depth": 0,
