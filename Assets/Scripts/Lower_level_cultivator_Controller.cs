@@ -51,14 +51,14 @@ Level 7 100%
 
 using UnityEngine;
 
-public class CollectibleController : MonoBehaviour
+public class Lower_level_cultivator_Controllerscript : MonoBehaviour
 {
 private GameManager gameManager;
 [SerializeField] private AudioClip collectSound;
 [SerializeField] private GameObject collectParticlePrefab;
 [SerializeField] private float rotationSpeed = 50f;
 
-// Data required in Inspector: Current level of this collectible (automatically assigned via weighted random probability at Start)
+// Data required in Inspector: Current level of this cultivator (automatically assigned via weighted random probability at Start)
 [SerializeField] private int itemLevel = 1;
 
 // Data required in Inspector: Movement speed for chasing the player (e.g., 3.0)
@@ -75,7 +75,7 @@ void Start()
 // Finds the Game Manager in the Scene using explicit generic type GameManager
 gameManager = FindAnyObjectByType<GameManager>();
 
-// Assigns a weighted random level between 1 and 7 based on probability percentages when initialized
+// Assigns a weighted random level between 1 and 2 based on probability percentages when initialized
 GenerateRandomLevel();
 
 // Sets up initial movement references to locate the player transform
@@ -133,7 +133,7 @@ float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.po
 // Chases player if within detection range
 if (distanceToPlayer <= detectionRange)
 {
-    ChasePlayer();
+ChasePlayer();
 }
 }
 }
@@ -144,40 +144,19 @@ private void ChasePlayer()
 transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
 }
 
-// Generates a weighted random level integer from 1 to 7 using cumulative percentage thresholds
+// Generates a weighted random level integer for lower level cultivators (Level 1: 60%, Level 2: 40%)
 private void GenerateRandomLevel()
 {
 // Rolls a random float value between 0.0 and 100.0 representing percentage roll
 float randomRoll = Random.Range(0f, 100f);
 
-// Cumulative threshold checks evaluating new VERSION 1.9 probabilities: 80%, 10%, 5%, 2.5%, 1.5%, 0.9%, 0.1%
-if (randomRoll < 80.0f)
+if (randomRoll < 60.0f)
 {
-itemLevel = 1; // 80% probability (0.0 to 79.999)
-}
-else if (randomRoll < 90.0f)
-{
-itemLevel = 2; // 10% probability (80.0 to 89.999)
-}
-else if (randomRoll < 95.0f)
-{
-itemLevel = 3; // 5% probability (90.0 to 94.999)
-}
-else if (randomRoll < 97.5f)
-{
-itemLevel = 4; // 2.5% probability (95.0 to 97.499)
-}
-else if (randomRoll < 99.0f)
-{
-itemLevel = 5; // 1.5% probability (97.5 to 98.999)
-}
-else if (randomRoll < 99.9f)
-{
-itemLevel = 6; // 0.9% probability (99.0 to 99.899)
+itemLevel = 1; // 60% probability (0.0 to 59.999)
 }
 else
 {
-itemLevel = 7; // 0.1% probability (99.9 to 100.0)
+itemLevel = 2; // 40% probability (60.0 to 100.0)
 }
 }
 
@@ -207,37 +186,36 @@ return;
 
 // Try to retrieve the NewMonoBehaviourScript (Player) component from the player GameObject
 NewMonoBehaviourScript player = playerObject.GetComponent<NewMonoBehaviourScript>();
-
 if (player != null)
 {
-// Send current player level and collectible level to GameManager UI
+// Send current player level and cultivator level to GameManager UI
 if (gameManager != null)
 {
 gameManager.UpdatePlayerLevelUI(player.getPlayerLevel());
 gameManager.UpdateCollectibleLevelUI(itemLevel);
 }
 
-// If collectible's level is greater than the player's level, destroy player
+// If cultivator's level is greater than the player's level, destroy player
 if (itemLevel > player.getPlayerLevel())
 {
-    Destroy(playerObject);
+Destroy(playerObject);
 }
-// If player's level is higher or equal to collectible's level, collect the item and increase player level
+// If player's level is higher or equal to cultivator's level, collect the item and increase player level
 else
 {
-    // Calculates level gain using Option C formula: (Collectible Level / 3) / Player Level
-    float levelGain = CalculateLevelGain(itemLevel, player.getPlayerLevel());
+// Calculates level gain using Option C formula: (Cultivator Level / 3) / Player Level
+float levelGain = CalculateLevelGain(itemLevel, player.getPlayerLevel());
 
-    // Increase player's level by adding the calculated level gain
-    player.IncreaseLevel(levelGain);
+// Increase player's level by adding the calculated level gain
+player.IncreaseLevel(levelGain);
 
-    // Update UI immediately to display the player's new level
-    if (gameManager != null)
-    {
-        gameManager.UpdatePlayerLevelUI(player.getPlayerLevel());
-    }
+// Update UI immediately to display the player's new level
+if (gameManager != null)
+{
+    gameManager.UpdatePlayerLevelUI(player.getPlayerLevel());
+}
 
-    CollectItem();
+CollectItem();
 }
 }
 }
